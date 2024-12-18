@@ -1,0 +1,45 @@
+scope: postgres
+namespace: default
+name: $POD_NAME
+restapi:
+  listen: 0.0.0.0:8008
+  connect_address: $POD_IP:8008
+etcd:
+  hosts: etcd:2379
+bootstrap:
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+    postgresql:
+      use_pg_rewind: true
+      parameters:
+        wal_level: replica
+        hot_standby: "on"
+        max_wal_senders: 5
+        max_replication_slots: 8
+        wal_keep_segments: 8
+        max_connections: 100  # Добавлено для ограничения количества соединений
+        shared_buffers: 256MB  # Рекомендуется для производительности
+  pg_hba:
+    - host replication all all trust
+    - local all all trust 
+postgresql:
+  listen: 0.0.0.0:5432
+  connect_address: $POD_IP:5432
+  data_dir: /var/lib/postgresql/data
+  bin_dir: /usr/lib/postgresql/12/bin
+  authentication:
+    replication:
+      username: replicator
+      password: '123'  # Добавьте пароль для безопасности
+    superuser:
+      username: postgres
+      password: 'wasd123'  # Добавьте пароль для суперпользователя
+
+kubernetes:
+  enabled: true
+
+watchdog:
+  enabled: false
