@@ -20,8 +20,8 @@ bootstrap:
         max_wal_senders: 5
         max_replication_slots: 8
         wal_keep_segments: 8
-        max_connections: 100  # Добавлено для ограничения количества соединений
-        shared_buffers: 256MB  # Рекомендуется для производительности
+        max_connections: 100 
+        shared_buffers: 256MB 
   pg_hba:
     - host replication all all trust
     - local all all trust 
@@ -33,10 +33,10 @@ postgresql:
   authentication:
     replication:
       username: replicator
-      password: '123'  # Добавьте пароль для безопасности
+      password: '123'
     superuser:
       username: postgres
-      password: 'wasd123'  # Добавьте пароль для суперпользователя
+      password: 'wasd123'
 
 kubernetes:
   enabled: true

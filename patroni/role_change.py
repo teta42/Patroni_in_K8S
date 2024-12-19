@@ -38,4 +38,4 @@ while True:
     statys = get_pod_role()
     if statys != None:
         change_labels(pod_name, namespace, v1, statys)
-    sleep(sleepness)
+        sleep(sleepness)
