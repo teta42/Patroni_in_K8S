@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# Запускаем первый скрипт Python в фоновом режиме
+# Запускаем скрипт для подстановки переменных
 python /etc/pod_name.py &
 
-# Запускаем Patroni и второй скрипт Python в фоновом режиме
-sudo -u postgres patroni /etc/patroni.yml & python /app/change_labels.py
+# Даём права для смонтировонного каталога
+sudo chmod 0700 /var/lib/postgresql/data
+sudo chown -R postgres:postgres /var/lib/postgresql/data
+
+# Запускаем Patroni и скрипт смены ролей
+sudo -u postgres patroni /etc/patroni.yml & python /etc/change_labels.py

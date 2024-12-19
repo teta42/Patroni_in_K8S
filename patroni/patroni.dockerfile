@@ -1,4 +1,7 @@
 FROM python:3.8-slim
+LABEL author="teta42"
+LABEL version="1.0"
+LABEL repo="https://github.com/teta42/Patroni_in_K8S"
 
 EXPOSE 8008
 EXPOSE 5432
@@ -27,23 +30,17 @@ RUN apt-get install -y sudo \
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка необходимых Python библиотек
+# Установка зависимостей 
 RUN pip install patroni==4.0.3 psycopg2-binary python-etcd PyYAML
-
-# Копирование скрипта
-COPY pat/ /etc/
-# COPY pg_hba.conf /etc/postgresql/12/main/pg_hba.conf
-# COPY pg_hba.conf /var/lib/postgresql/data/pg_hba.conf
-
-COPY change_labels.py /app/change_labels.py
-
 RUN pip install kubernetes requests
 
-# Убедитесь, что скрипт имеет права на выполнение
-RUN chmod +x /app/change_labels.py
+# Копирование скриптов
+COPY . /etc/
 
-# Установка прав на скрипт
+# Даю скриптам права на выполнение
 RUN chmod +x /etc/start.sh
+RUN chmod +x /etc/pod_name.py
+RUN chmod +x /etc/change_labels.py
 
 # Установка точки входа
 CMD [ "./etc/start.sh" ]
