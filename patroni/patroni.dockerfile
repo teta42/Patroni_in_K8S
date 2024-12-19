@@ -39,8 +39,8 @@ COPY . /etc/
 
 # Даю скриптам права на выполнение
 RUN chmod +x /etc/start.sh
-RUN chmod +x /etc/pod_name.py
-RUN chmod +x /etc/change_labels.py
+RUN chmod +x /etc/insert_variables.py
+RUN chmod +x /etc/role_change.py
 
 # Установка точки входа
 CMD [ "./etc/start.sh" ]
